@@ -1,9 +1,9 @@
 #angular-forage
 A Javascript library extend localforage with angular. You can set expire time when store data.  
 
-## INSTALL
-    bower install https://github.com/sun-sheng/angular-forage
-## USE
+### INSTALL
+    bower install angular-forage --save
+### USE
 Reference these files in your index.html  
 ```html
 <script src="path/to/bower_components/localforage/dist/localforage.nopromises.min.js"></script>
@@ -25,8 +25,8 @@ angular.module('yourApp').controller('YourCtrl', function( $scope, $forage ) {
   });
 });
 ```
-## API
-### $forage.set(key, data, \[expire\_at\])
+### API
+#### $forage.set(key, data, \[expire\_at\])
 <table>
     <thead>
     <tr>
@@ -47,16 +47,16 @@ angular.module('yourApp').controller('YourCtrl', function( $scope, $forage ) {
         <td></td>
     </tr>
     <tr>
-        <td>expire\_at</td>
+        <td>expire_at</td>
         <td>number</td>
         <td>expire timestamp;optional parameter,if not set will use the forage default option (Date.now() + defaultExpireTimeout)</td>
     </tr>
     </tbody>
 </table>
-### $forage.get(key)
-### $forage.remove(key)
-### $forage.clear()
-### $forage.config(options)
+#### $forage.get(key)
+#### $forage.remove(key)
+#### $forage.clear()
+#### $forage.config(options)
 <table>
     <thead>
     <tr>
