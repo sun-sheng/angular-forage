@@ -1,0 +1,31 @@
+{
+  "name": "angular-forage",
+  "version": "1.0.0",
+  "description": "ex localforage with angular",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sun-sheng/angular-forage.git"
+  },
+  "keywords": [
+    "localforage",
+    "localStorage",
+    "indexDB",
+    "webSQL",
+    "angular"
+  ],
+  "author": "sunsheng.cn@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sun-sheng/angular-forage/issues"
+  },
+  "homepage": "https://github.com/sun-sheng/angular-forage#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0"
+  }
+}
