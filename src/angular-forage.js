@@ -3,7 +3,7 @@
 
     var forage_config = {
         prefix: '_ng_',
-        default_expire_after: 3600000,
+        defaultExpireTimeout: 3600000,
         errorHandler: function (err)
         {
             return err;
@@ -120,7 +120,7 @@
                     return false;
                 }
                 var now = Date.now();
-                expire_at = (angular.isNumber(expire_at) && expire_at > 0) ? expire_at : (now + forage_config.default_expire_after);
+                expire_at = (angular.isNumber(expire_at) && expire_at > 0) ? expire_at : (now + forage_config.defaultExpireTimeout);
                 _mem_forage[key] = {
                     expire_at: expire_at,
                     data: data
