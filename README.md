@@ -1,6 +1,8 @@
 #angular-forage
-**toastr** is a Javascript library extend localforage with angular. You can set expire time when store data.  
+A Javascript library extend localforage with angular. You can set expire time when store data.  
 
+### INSTALL
+    bower install https://github.com/sun-sheng/angular-forage
 ### USE
     angular.module('app', ['ngForage']).run(function($forage){//use $forage});
 ### API
