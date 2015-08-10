@@ -4,7 +4,7 @@ A Javascript library extend localforage with angular. You can set expire time wh
 ## INSTALL
     bower install https://github.com/sun-sheng/angular-forage
 ## USE
-Reference the file in your index.html (or where you include angular.js) after you include angular.js   
+Reference these files in your index.html  
 ```html
 <script src="path/to/bower_components/localforage/dist/localforage.nopromises.min.js"></script>
 <script src="path/to/bower_components/angular/angular.min.js"></script>
@@ -26,7 +26,7 @@ angular.module('yourApp').controller('YourCtrl', function( $scope, $forage ) {
 });
 ```
 ## API
-### $forage.set(key, data, expire_at)
+### $forage.set(key, data, [expire_at])
 ### $forage.get(key)
 ### $forage.remove(key)
 ### $forage.clear()
