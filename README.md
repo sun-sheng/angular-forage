@@ -16,7 +16,10 @@ angular.module('yourApp', ['ngForage']);
 ```    
 Finally, using it:
 ```javascript
-angular.module('yourApp').controller('YourCtrl', function( $scope, $forage ) {
+angular.module('yourApp').config(function($forageProvider) {
+    //config
+    $forageProvider.config({prefix: '_demo_'});
+}).controller('YourCtrl', function( $scope, $forage ) {
   $forage.set('key', 'value');
   $forage.get('key').then(function (data) {
     //console.log(data);  
@@ -56,7 +59,8 @@ angular.module('yourApp').controller('YourCtrl', function( $scope, $forage ) {
 #### $forage.get(key)
 #### $forage.remove(key)
 #### $forage.clear()
-#### $forage.config(options)
+
+#### $forageProvider.config(options)
 <table>
     <thead>
     <tr>
