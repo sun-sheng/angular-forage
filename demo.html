@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        form {display: block; width: 300px;}
+        form input, form textarea {display: block; width: 100%; box-sizing: border-box; margin-bottom: 15px;}
+    </style>
+</head>
+<body>
+<script src="bower_components/localforage/dist/localforage.nopromises.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="src/angular-forage.js"></script>
+
+<script>
+
+    angular.module('app', ['ngForage']).config(function ($forageProvider)
+    {
+        $forageProvider.config({prefix: 'demo'});
+    }).run(function ($rootScope, $forage)
+    {
+        var data = {};
+        $rootScope.data = data;
+        $rootScope.save = function ()
+        {
+            $forage.set(data.key, data, data.expire_at.getTime());
+        }
+    });
+
+</script>
+    <div ng-app="app">
+        <form>
+            <input type="text" ng-model="data.key" placeholder="key"/>
+            <input type="text" ng-model="data.title" placeholder="title"/>
+            <textarea ng-model="data.content" placeholder="content"></textarea>
+            <input type="date" ng-model="data.expire_at"/>
+            <button ng-click="save()">Save</button>
+        </form>
+    </div>
+</body>
+</html>

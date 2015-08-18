@@ -1,4 +1,4 @@
-;angular.module('ngForage', []).factory('$forage', ['$q', function ($q)
+;angular.module('ngForage', []).provider('$forage', function ()
 {
 
     var forage_config = {
@@ -78,101 +78,106 @@
         });
     };
 
-    var $forage = {
 
-        config: function (options)
-        {
-            forage_config = angular.extend(forage_config, options);
-            localforage.config({
-                driver: forage_config.driver
-            });
-        },
-        get: function (key)
-        {
-            var now = Date.now();
-            var mem_obj = _mem_forage[key];
-            if (mem_obj)
+
+    this.config = function (options)
+    {
+        forage_config = angular.extend(forage_config, options);
+        localforage.config({
+            driver: forage_config.driver
+        });
+    };
+
+    this.$get = ['$q', function ($q)
+    {
+        var $forage = {
+
+            get: function (key)
             {
-                if (mem_obj.expire_at > now)
+                var now = Date.now();
+                var mem_obj = _mem_forage[key];
+                if (mem_obj)
                 {
-                    return $q.when(mem_obj.data);
-                }
-                else
-                {
-                    return $forage.remove(key).then(function ()
+                    if (mem_obj.expire_at > now)
                     {
-                        return $q.reject(forage_config.transformError(FORAGE_ERROR.TIME_EXPIRE));
-                    }, function ()
-                    {
-                        return $q.reject(forage_config.transformError(FORAGE_ERROR.UNKNOWN));
-                    });
-                }
-            }
-            return get_from_forage(key, now);
-        },
-        set: function (key, data, expire_at)
-        {
-            return $q(function (resolve, reject)
-            {
-                if (! angular.isString(key) || ! angular.isObject(data))
-                {
-                    reject(forage_config.transformError(FORAGE_ERROR.SET));
-                    return false;
-                }
-                expire_at = (angular.isNumber(expire_at) && expire_at > 0) ? expire_at : forage_config.defaultExpireTime;
-                _mem_forage[key] = {
-                    expire_at: expire_at,
-                    data: data
-                };
-                localforage.setItem(forage_config.prefix + key, {
-                    expire_at: expire_at,
-                    data: data
-                }, function (err)
-                {
-                    if (err)
-                    {
-                        reject(forage_config.transformError(FORAGE_ERROR.SET));
+                        return $q.when(mem_obj.data);
                     }
                     else
                     {
-                        resolve(data);
+                        return $forage.remove(key).then(function ()
+                        {
+                            return $q.reject(forage_config.transformError(FORAGE_ERROR.TIME_EXPIRE));
+                        }, function ()
+                        {
+                            return $q.reject(forage_config.transformError(FORAGE_ERROR.UNKNOWN));
+                        });
                     }
-                });
-            });
-        },
-        remove: function (key)
-        {
-            return $q(function (resolve, reject)
+                }
+                return get_from_forage(key, now);
+            },
+            set: function (key, data, expire_at)
             {
-                _mem_forage[key] = undefined;
-                localforage.removeItem(forage_config.prefix + key, function (err)
+                return $q(function (resolve, reject)
                 {
-                    if (err)
+                    if (! angular.isString(key) || ! angular.isObject(data))
                     {
-                        reject(forage_config.transformError(FORAGE_ERROR.REMOVE));
+                        reject(forage_config.transformError(FORAGE_ERROR.SET));
                         return false;
                     }
-                    resolve();
-                });
-            });
-        },
-        clear: function ()
-        {
-            return $q(function (resolve, reject)
-            {
-                _mem_forage = {};
-                localforage.clear(function (err)
-                {
-                    if (err)
+                    expire_at = (angular.isNumber(expire_at) && expire_at > 0) ? expire_at : forage_config.defaultExpireTime;
+                    _mem_forage[key] = {
+                        expire_at: expire_at,
+                        data: data
+                    };
+                    localforage.setItem(forage_config.prefix + key, {
+                        expire_at: expire_at,
+                        data: data
+                    }, function (err)
                     {
-                        reject(forage_config.transformError(FORAGE_ERROR.CLEAR));
-                        return false;
-                    }
-                    resolve();
+                        if (err)
+                        {
+                            reject(forage_config.transformError(FORAGE_ERROR.SET));
+                        }
+                        else
+                        {
+                            resolve(data);
+                        }
+                    });
                 });
-            });
-        }
-    };
-
-    return $forage;
-}]);
+            },
+            remove: function (key)
+            {
+                return $q(function (resolve, reject)
+                {
+                    _mem_forage[key] = undefined;
+                    localforage.removeItem(forage_config.prefix + key, function (err)
+                    {
+                        if (err)
+                        {
+                            reject(forage_config.transformError(FORAGE_ERROR.REMOVE));
+                            return false;
+                        }
+                        resolve();
+                    });
+                });
+            },
+            clear: function ()
+            {
+                return $q(function (resolve, reject)
+                {
+                    _mem_forage = {};
+                    localforage.clear(function (err)
+                    {
+                        if (err)
+                        {
+                            reject(forage_config.transformError(FORAGE_ERROR.CLEAR));
+                            return false;
+                        }
+                        resolve();
+                    });
+                });
+            }
+        };
+        return $forage;
+    }];
+});
