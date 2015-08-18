@@ -49,7 +49,7 @@ angular.module('yourApp').controller('YourCtrl', function( $scope, $forage ) {
     <tr>
         <td>expire_at</td>
         <td>number</td>
-        <td>expire timestamp;optional parameter,if not set will use the forage default option (Date.now() + defaultExpireTimeout)</td>
+        <td>expire timestamp;optional parameter,if not set will use the infinite time </td>
     </tr>
     </tbody>
 </table>
@@ -82,9 +82,9 @@ angular.module('yourApp').controller('YourCtrl', function( $scope, $forage ) {
         <td>for localforage</td>
     </tr>
     <tr>
-        <td>errorHandler</td>
+        <td>transformError</td>
         <td>function</td>
-        <td>set custom error handler</td>
+        <td>set a error transform function</td>
     </tr>
     </tbody>
 </table>

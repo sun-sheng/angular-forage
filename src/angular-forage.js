@@ -3,8 +3,8 @@
 
     var forage_config = {
         prefix: '_ng_',
-        defaultExpireTimeout: 3600000,
-        errorHandler: function (err)
+        defaultExpireTime: 9999999999999,
+        transformError: function (err)
         {
             return err;
         },
@@ -52,7 +52,7 @@
             {
                 if (err || ! value)
                 {
-                    reject(forage_config.errorHandler(FORAGE_ERROR.GET));
+                    reject(forage_config.transformError(FORAGE_ERROR.GET));
                     return false;
                 }
                 var expire_at = Number(value.expire_at);
@@ -68,10 +68,10 @@
                 {
                     $forage.remove(key).then(function ()
                     {
-                        reject(forage_config.errorHandler(FORAGE_ERROR.TIME_EXPIRE));
+                        reject(forage_config.transformError(FORAGE_ERROR.TIME_EXPIRE));
                     }, function ()
                     {
-                        reject(forage_config.errorHandler(FORAGE_ERROR.UNKNOWN));
+                        reject(forage_config.transformError(FORAGE_ERROR.UNKNOWN));
                     });
                 }
             });
@@ -101,10 +101,10 @@
                 {
                     return $forage.remove(key).then(function ()
                     {
-                        return $q.reject(forage_config.errorHandler(FORAGE_ERROR.TIME_EXPIRE));
+                        return $q.reject(forage_config.transformError(FORAGE_ERROR.TIME_EXPIRE));
                     }, function ()
                     {
-                        return $q.reject(forage_config.errorHandler(FORAGE_ERROR.UNKNOWN));
+                        return $q.reject(forage_config.transformError(FORAGE_ERROR.UNKNOWN));
                     });
                 }
             }
@@ -116,11 +116,10 @@
             {
                 if (! angular.isString(key) || ! angular.isObject(data))
                 {
-                    reject(forage_config.errorHandler(FORAGE_ERROR.SET));
+                    reject(forage_config.transformError(FORAGE_ERROR.SET));
                     return false;
                 }
-                var now = Date.now();
-                expire_at = (angular.isNumber(expire_at) && expire_at > 0) ? expire_at : (now + forage_config.defaultExpireTimeout);
+                expire_at = (angular.isNumber(expire_at) && expire_at > 0) ? expire_at : forage_config.defaultExpireTime;
                 _mem_forage[key] = {
                     expire_at: expire_at,
                     data: data
@@ -132,7 +131,7 @@
                 {
                     if (err)
                     {
-                        reject(forage_config.errorHandler(FORAGE_ERROR.SET));
+                        reject(forage_config.transformError(FORAGE_ERROR.SET));
                     }
                     else
                     {
@@ -150,7 +149,7 @@
                 {
                     if (err)
                     {
-                        reject(forage_config.errorHandler(FORAGE_ERROR.REMOVE));
+                        reject(forage_config.transformError(FORAGE_ERROR.REMOVE));
                         return false;
                     }
                     resolve();
@@ -166,7 +165,7 @@
                 {
                     if (err)
                     {
-                        reject(forage_config.errorHandler(FORAGE_ERROR.CLEAR));
+                        reject(forage_config.transformError(FORAGE_ERROR.CLEAR));
                         return false;
                     }
                     resolve();
