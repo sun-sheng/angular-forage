@@ -78,16 +78,6 @@ angular.module('yourApp').config(function($forageProvider) {
     </thead>
     <tbody>
     <tr>
-        <td>prefix</td>
-        <td>string</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>defaultExpireTimeout</td>
-        <td>number</td>
-        <td></td>
-    </tr>
-    <tr>
         <td>driver</td>
         <td>array</td>
         <td>for localforage</td>

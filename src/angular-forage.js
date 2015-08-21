@@ -2,7 +2,6 @@
 angular.module('ngForage', []).provider('$forage', function () {
 
   var forage_config = {
-    prefix: '_ng_',
     defaultExpireTime: 9999999999999,
     transformError: function (err) {
       return err;
@@ -69,7 +68,7 @@ angular.module('ngForage', []).provider('$forage', function () {
 
     var get_from_forage = function (key, now) {
       return $q(function (resolve, reject) {
-        localforage.getItem(forage_config.prefix + key, function (err, value) {
+        localforage.getItem(key, function (err, value) {
           if (err || !value) {
             reject(forage_config.transformError(FORAGE_ERROR.GET));
             return false;
@@ -123,7 +122,7 @@ angular.module('ngForage', []).provider('$forage', function () {
             expire_at: expire_at,
             data: data
           };
-          localforage.setItem(forage_config.prefix + key, {
+          localforage.setItem(key, {
             expire_at: expire_at,
             data: data
           }, function (err) {
@@ -139,7 +138,7 @@ angular.module('ngForage', []).provider('$forage', function () {
       remove: function (key) {
         return $q(function (resolve, reject) {
           _mem_forage[key] = undefined;
-          localforage.removeItem(forage_config.prefix + key, function (err) {
+          localforage.removeItem(key, function (err) {
             if (err) {
               reject(forage_config.transformError(FORAGE_ERROR.REMOVE));
               return false;
@@ -162,40 +161,43 @@ angular.module('ngForage', []).provider('$forage', function () {
       },
       length: function () {
         return $q(function (resolve, reject) {
-          localforage.length(function (err) {
+          localforage.length(function (err, length) {
             if (err) {
               reject(forage_config.transformError(FORAGE_ERROR.LENGTH));
               return false;
             }
-            resolve();
+            resolve(length);
           });
         });
       },
       key: function (index) {
         return $q(function (resolve, reject) {
-          localforage.key(index, function (err) {
+          localforage.key(index, function (err, key) {
             if (err) {
               reject(forage_config.transformError(FORAGE_ERROR.KEY));
               return false;
             }
-            resolve();
+            resolve(key);
           });
         });
       },
       keys: function () {
         return $q(function (resolve, reject) {
-          localforage.keys(function (err) {
+          localforage.keys(function (err, keys) {
             if (err) {
               reject(forage_config.transformError(FORAGE_ERROR.KEYS));
               return false;
             }
-            resolve();
+            resolve(keys);
           });
         });
       },
       iterate: function (cb) {
         return $q(function (resolve, reject) {
-          localforage.iterate(cb, function (err) {
+          localforage.iterate(function (value, key, index) {
+            cb(value.data, key, index);
+            _mem_forage[key] = undefined;
+          }, function (err) {
             if (err) {
               reject(forage_config.transformError(FORAGE_ERROR.ITERATE));
               return false;
