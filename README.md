@@ -59,6 +59,13 @@ angular.module('yourApp').config(function($forageProvider) {
 #### $forage.get(key)
 #### $forage.remove(key)
 #### $forage.clear()
+#### $forage.length()
+#### $forage.key(index)
+#### $forage.keys()
+#### $forage.iterate(callback)
+* value
+* key
+* iterationNumber
 
 #### $forageProvider.config(options)
 <table>
